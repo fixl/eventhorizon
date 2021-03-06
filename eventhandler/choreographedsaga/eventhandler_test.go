@@ -151,7 +151,7 @@ func (s *TestSaga) SagaType() Type {
 	return TestSagaType
 }
 
-func (s *TestSaga) Aggregate(event eh.Event) (eh.AggregateType, uuid.UUID, error) {
+func (s *TestSaga) ForAggregate(event eh.Event) (eh.AggregateType, uuid.UUID, error) {
 	if data, ok := event.Data().(*TestEventData); ok {
 		return mocks.AggregateType, data.TestAggregateID, nil
 	}

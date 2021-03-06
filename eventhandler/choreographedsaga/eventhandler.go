@@ -34,9 +34,9 @@ type Saga interface {
 	// SagaType returns the type of the saga.
 	SagaType() Type
 
-	// Aggregate extracts the aggregate type and ID for which aggregate to load.
+	// ForAggregate extracts the aggregate type and ID for which aggregate to load.
 	// Because a saga can be choreographed across many aggregates, this varies from event to event.
-	Aggregate(event eh.Event) (eh.AggregateType, uuid.UUID, error)
+	ForAggregate(event eh.Event) (eh.AggregateType, uuid.UUID, error)
 
 	// RunSaga handles an event in saga that can returns commands.
 	// A fully loaded aggregate is passed to the saga to allow making
@@ -93,7 +93,7 @@ func (h *EventHandler) HandlerType() eh.EventHandlerType {
 
 // HandleEvent implements the HandleEvent method of the eventhorizon.EventHandler interface.
 func (h *EventHandler) HandleEvent(ctx context.Context, event eh.Event) error {
-	aggregateType, aggregateID, err := h.saga.Aggregate(event)
+	aggregateType, aggregateID, err := h.saga.ForAggregate(event)
 	if err != nil {
 		return Error{
 			Err:       err,
